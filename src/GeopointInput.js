@@ -20,6 +20,11 @@ const EMPTY_MARKERS = []
 const DEFAULT_ZOOM = 13
 const DEFAULT_CENTER = [37.779048, -122.415214]
 
+const clickToMove =
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  !matchMedia('(pointer:fine)').matches
+
 function getKeyPlaceholder(url) {
   const [, key] = url.match(/access_token=\{(.*?)\}/) || []
   return key
@@ -61,7 +66,7 @@ const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
   }
 
   function handleMapClick(evt) {
-    if (value && value.lat) {
+    if (!clickToMove && value && value.lat) {
       return
     }
 
@@ -114,6 +119,8 @@ const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
 
           <ZoomControl position="topright" />
         </Map>
+
+        <p className={styles.helpText}>{getHelpText(value)}</p>
       </div>
     </Fieldset>
   )

@@ -23,3 +23,11 @@
 .errorHeading {
   margin: var(--small-padding) 0;
 }
+
+.helpText {
+  background: #eee;
+  margin: 0;
+  padding: var(--small-padding);
+  text-align: center;
+  font-size: var(--font-size-small);
+}
