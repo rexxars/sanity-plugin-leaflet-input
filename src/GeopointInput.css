@@ -1,0 +1,25 @@
+@import 'part:@sanity/base/theme/variables-style';
+
+.map {
+  height: 400px;
+  width: 100%;
+}
+
+.errorContainer {
+  background: var(--state-warning-color);
+  padding: var(--small-padding);
+}
+
+.errorContainer a {
+  color: black;
+}
+
+.errorContainer code {
+  background: rgba(255, 255, 255, 0.35);
+  padding: 2.5px;
+  white-space: nowrap;
+}
+
+.errorHeading {
+  margin: var(--small-padding) 0;
+}

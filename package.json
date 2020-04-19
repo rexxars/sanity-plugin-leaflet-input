@@ -1,0 +1,72 @@
+{
+  "name": "sanity-plugin-leaflet-input",
+  "description": "Leaflet geopoint input component for Sanity.io",
+  "main": "lib/GeopointInput.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "sanipack build",
+    "prepublishOnly": "sanipack build && sanipack verify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rexxars/sanity-plugin-leaflet-input.git"
+  },
+  "keywords": [
+    "sanity-io",
+    "sanity",
+    "sanity-input-component",
+    "sanity-plugin",
+    "geopoint",
+    "map"
+  ],
+  "author": "Espen Hovlandsdal",
+  "license": "MIT",
+  "dependencies": {
+    "leaflet": "^1.6.0",
+    "prop-types": "^15.7.2",
+    "react-leaflet": "^2.6.3"
+  },
+  "devDependencies": {
+    "prettier": "2.0.4",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.10.1",
+    "eslint-config-sanity": "1.149.0",
+    "eslint-plugin-react": "7.19.0"
+  },
+  "peerDependencies": {
+    "react": "^16.2",
+    "react-dom": "^16.2"
+  },
+  "version": "1.0.0",
+  "bugs": {
+    "url": "https://github.com/rexxars/sanity-plugin-leaflet-input/issues"
+  },
+  "homepage": "https://github.com/rexxars/sanity-plugin-leaflet-input#readme",
+  "prettier": {
+    "semi": false,
+    "printWidth": 100,
+    "bracketSpacing": false,
+    "singleQuote": true
+  },
+  "eslintConfig": {
+    "extends": [
+      "sanity",
+      "sanity/react",
+      "prettier",
+      "prettier/react"
+    ],
+    "env": {
+      "node": true,
+      "browser": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "rules": {
+      "complexity": "off"
+    }
+  }
+}
