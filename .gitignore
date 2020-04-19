@@ -48,3 +48,6 @@ package-lock.json
 
 # Cache
 .cache
+
+# Build output
+/lib
