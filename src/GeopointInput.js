@@ -1,4 +1,4 @@
-import React, {createRef} from 'react'
+import React, {createRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import Leaflet from 'leaflet'
 import {Map, TileLayer, Marker, ZoomControl, Popup} from 'react-leaflet'
@@ -37,12 +37,24 @@ function isMissingMapboxApiKey(tileConfig) {
   return url.includes('tiles.mapbox.com') && keyPlaceholder && !tileConfig[keyPlaceholder]
 }
 
+function getHelpText(value) {
+  if (!value || !value.lat) {
+    return `Click on map to set location`
+  }
+
+  if (clickToMove) {
+    return `Click on map to change location. Click marker to remove it.`
+  }
+
+  return `Drag marker to change location. Click marker to remove it.`
+}
+
 const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
   const {type, level, value, markers, onChange} = props
   const typeOptions = type.options?.leaflet || {}
   const tileConfig = {...config.tileLayer, ...typeOptions.tileLayer}
   const center = value || typeOptions.defaultLocation || config.defaultLocation || DEFAULT_CENTER
-  const zoom = typeOptions.defaultZoom || config.defaultZoom || DEFAULT_ZOOM
+  const [zoom, setZoom] = useState(typeOptions.defaultZoom || config.defaultZoom || DEFAULT_ZOOM)
   const markerRef = createRef()
 
   if (isMissingMapboxApiKey(tileConfig)) {
@@ -85,6 +97,10 @@ const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
     onChange(PatchEvent.from(unset()))
   }
 
+  function onZoom(evt) {
+    setZoom(evt.target.getZoom())
+  }
+
   return (
     <Fieldset legend={type.title} description={type.description} markers={markers} level={level}>
       <div className={leafStyles.leaflet}>
@@ -94,6 +110,7 @@ const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
           center={center}
           zoom={zoom}
           zoomControl={false}
+          onZoomEnd={onZoom}
           scrollWheelZoom={false}
           onClick={handleMapClick}
           trackResize
