@@ -4,6 +4,16 @@
 
 By default it will use OpenStreetMaps tiles, but it can be configured to use a different provider, such as Mapbox.
 
+## Screenshots
+
+**Using OpenStreetMaps**
+
+![sanity-plugin-leaflet with OpenStreetMaps](assets/osm.jpg)
+
+**Using MapBox (streets style)**
+
+![sanity-plugin-leaflet with MapBox](assets/mapbox.jpg)
+
 ## Installing
 
 ```
