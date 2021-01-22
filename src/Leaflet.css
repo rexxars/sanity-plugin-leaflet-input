@@ -650,3 +650,178 @@
   margin-left: -12px;
   border-right-color: #fff;
 }
+
+/* GeoSearchInput */
+
+.leaflet :global(.geocoder-control-input) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-image: url('esri-leaflet-geocoder/dist/img/search.png');
+  background-size: 26px;
+  border: none;
+  padding: 0;
+  text-indent: 6px;
+  font-size: 13px;
+  line-height: normal;
+  height: auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 100%;
+  background-position: right center;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.leaflet :global(.geocoder-control-input-disabled) {
+  background-color: #f4f4f4;
+  background-image: url('esri-leaflet-geocoder/dist/img/search-disabled.png');
+}
+
+.leaflet :global(.geocoder-control) {
+  width: 26px;
+  height: 26px;
+  -webkit-transition: width 0.175s ease-in;
+  -moz-transition: width 0.175s ease-in;
+  -ms-transition: width 0.175s ease-in;
+  -o-transition: width 0.175s ease-in;
+  transition: width 0.175s ease-in;
+}
+
+.leaflet :global(.geocoder-control-expanded),
+.leaflet :global(.leaflet-touch .geocoder-control-expanded) {
+  width: 275px;
+}
+
+.leaflet :global(.geocoder-control-input.geocoder-control-loading) {
+  background-image: url('esri-leaflet-geocoder/dist/img/loading.gif');
+  background-size: 26px;
+}
+
+@media only screen and (min--moz-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2 / 1),
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min-device-pixel-ratio: 2) {
+  .leaflet :global(.geocoder-control-input) {
+    background-image: url('esri-leaflet-geocoder/dist/img/search@2x.png');
+  }
+  .leaflet :global(.geocoder-control-input-disabled) {
+    background-image: url('esri-leaflet-geocoder/dist/img/search@2x-disabled.png');
+  }
+  .leaflet :global(.geocoder-control-input.geocoder-control-loading) {
+    background-image: url('esri-leaflet-geocoder/dist/img/loading@2x.gif');
+  }
+}
+
+.leaflet :global(.geocoder-control-input:focus) {
+  outline: none;
+  cursor: text;
+}
+
+.leaflet :global(.geocoder-control-input::-ms-clear) {
+  display: none;
+}
+
+.leaflet :global(.geocoder-control-suggestions) {
+  width: 100%;
+  position: absolute;
+  top: 26px;
+  left: 0;
+  margin-top: 10px;
+  overflow: auto;
+  display: none;
+}
+
+.leaflet :global(.geocoder-control-list + .geocoder-control-header) {
+  border-top: 1px solid #d5d5d5;
+}
+
+.leaflet :global(.geocoder-control-header) {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #444;
+  background: #f2f2f2;
+  border-bottom: 1px solid #d5d5d5;
+  display: block;
+  padding: 0.5em;
+}
+
+.leaflet :global(.geocoder-control-list) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.leaflet :global(.geocoder-control-suggestions .geocoder-control-suggestion) {
+  font-size: 13px;
+  padding: 7px;
+  background: white;
+  border-top: 1px solid #f1f1f1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.leaflet :global(.geocoder-control-suggestions .geocoder-control-suggestion:first-child) {
+  border: none;
+}
+
+.leaflet
+  :global(.geocoder-control-suggestions .geocoder-control-suggestion.geocoder-control-selected),
+.leaflet :global(.geocoder-control-suggestions .geocoder-control-suggestion:hover) {
+  background: #7fdfff;
+  border-color: #7fdfff;
+}
+
+.leaflet :global(.leaflet-right .geocoder-control-suggestions) {
+  left: auto;
+  right: 0;
+}
+
+.leaflet :global(.leaflet-right .geocoder-control-input) {
+  left: auto;
+  right: 0;
+}
+
+.leaflet :global(.leaflet-bottom .geocoder-control-suggestions) {
+  margin-top: 0;
+  top: 0;
+}
+
+.leaflet :global(.leaflet-touch .geocoder-control) {
+  width: 34px;
+}
+
+.leaflet :global(.leaflet-touch .geocoder-control.geocoder-control-expanded) {
+  width: 275px;
+}
+
+.leaflet :global(.leaflet-touch .geocoder-control-input) {
+  height: 34px;
+  line-height: 30px;
+  background-size: 30px;
+}
+
+.leaflet :global(.leaflet-touch .geocoder-control-suggestions) {
+  top: 30px;
+  width: 271px;
+}
+
+.leaflet :global(.leaflet-oldie .geocoder-control-input) {
+  width: 28px;
+  height: 28px;
+}
+
+.leaflet :global(.leaflet-oldie .geocoder-control-expanded .geocoder-control-input) {
+  width: auto;
+}
+
+.leaflet :global(.leaflet-oldie .geocoder-control-input),
+.leaflet :global(.leaflet-oldie .geocoder-control-suggestions) {
+  border: 1px solid #999;
+}
