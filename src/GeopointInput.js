@@ -8,6 +8,7 @@ import {PatchEvent, set, setIfMissing, unset} from 'part:@sanity/form-builder/pa
 import config from 'config:leaflet-input'
 import leafStyles from './Leaflet.css'
 import styles from './GeopointInput.css'
+import GeoSearchInput from './GeoSearchPlugin'
 import MapBoxAccessTokenMissing from './MapBoxAccessTokenMissing'
 
 Leaflet.Icon.Default.mergeOptions({
@@ -133,6 +134,8 @@ const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
               )}
             </Marker>
           )}
+
+          <GeoSearchInput onSelectLocation={setMarkerLocation} />
 
           <ZoomControl position="topright" />
         </Map>
