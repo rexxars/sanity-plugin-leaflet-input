@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-leaflet-input",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Leaflet geopoint input component for Sanity.io",
   "main": "lib/GeopointInput.js",
   "scripts": {
