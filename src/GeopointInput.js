@@ -50,6 +50,7 @@ function getHelpText(value) {
   return `Drag marker to change location. Click marker to remove it.`
 }
 
+// eslint-disable-next-line prefer-arrow-callback
 const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
   const {type, level, value, markers, onChange} = props
   const typeOptions = type.options?.leaflet || {}
