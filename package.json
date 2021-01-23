@@ -1,5 +1,6 @@
 {
   "name": "sanity-plugin-leaflet-input",
+  "version": "1.0.0",
   "description": "Leaflet geopoint input component for Sanity.io",
   "main": "lib/GeopointInput.js",
   "scripts": {
@@ -24,7 +25,7 @@
   "dependencies": {
     "esri-leaflet-geocoder": "^2.3.4",
     "leaflet": "^1.6.0",
-    "prop-types": "^15.7.2",
+    "prop-types": "^15.0.0",
     "react-leaflet": "^2.6.3"
   },
   "devDependencies": {
@@ -33,13 +34,13 @@
     "eslint-config-sanity": "^1.149.0",
     "eslint-plugin-react": "^7.19.0",
     "prettier": "^2.0.4",
-    "react": "^17.0.0"
+    "react": "^17.0.0",
+    "sanipack": "^1.0.1"
   },
   "peerDependencies": {
-    "react": "^16.2",
-    "react-dom": "^16.2"
+    "react": ">=16.2",
+    "react-dom": ">=16.2"
   },
-  "version": "1.0.0",
   "bugs": {
     "url": "https://github.com/rexxars/sanity-plugin-leaflet-input/issues"
   },
