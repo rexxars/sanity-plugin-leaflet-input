@@ -68,7 +68,8 @@ const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
   }
 
   function setMarkerLocation(latLng) {
-    if(latLng){
+    console.log(latLng)
+    if(latLng && latLng.lat){
       onChange(
         PatchEvent.from([
           setIfMissing({
