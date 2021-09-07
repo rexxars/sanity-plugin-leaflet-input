@@ -150,8 +150,8 @@ const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
 GeopointInput.propTypes = {
   value: PropTypes.shape({
     _type: PropTypes.string.isRequired,
-    lat: PropTypes.number.isRequired,
-    lng: PropTypes.number.isRequired,
+    lat: PropTypes.number,
+    lng: PropTypes.number,
   }),
   level: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
