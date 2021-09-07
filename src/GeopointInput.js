@@ -68,15 +68,17 @@ const GeopointInput = React.forwardRef(function GeopointInput(props, ref) {
   }
 
   function setMarkerLocation(latLng) {
-    onChange(
-      PatchEvent.from([
-        setIfMissing({
-          _type: type.name,
-        }),
-        set(latLng.lat, ['lat']),
-        set(latLng.lng, ['lng']),
-      ])
-    )
+    if(latLng){
+      onChange(
+        PatchEvent.from([
+          setIfMissing({
+            _type: type.name,
+          }),
+          set(latLng.lat, ['lat']),
+          set(latLng.lng, ['lng']),
+        ])
+      )
+    }
   }
 
   function handleMapClick(evt) {
