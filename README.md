@@ -1,108 +1,205 @@
 # sanity-plugin-leaflet-input
 
-[Leaflet](https://leafletjs.com/) is an open-source JavaScript library for mobile-friendly interactive maps. This plugin is an input component for [Sanity.io](https://www.sanity.io/) which lets you use the Leaflet library for the [Geopoint](https://www.sanity.io/docs/geopoint-type) schema type.
+A Leaflet map input for Sanity Studio `geopoint` fields.
 
-By default it will use OpenStreetMaps tiles, but it can be configured to use a different provider, such as Mapbox.
+Version 2 requires Sanity v5 or higher and React 19.
+For a version that supports Sanity Studio v2, see the [v1](https://github.com/rexxars/sanity-plugin-leaflet-input/tree/v1) branch/versions.
 
-## Screenshots
+## Install
 
-**Using OpenStreetMaps**
-
-![sanity-plugin-leaflet with OpenStreetMaps](assets/osm.jpg)
-
-**Using MapBox (streets style)**
-
-![sanity-plugin-leaflet with MapBox](assets/mapbox.jpg)
-
-## Installing
-
-```
-sanity install leaflet-input
+```sh
+npm install sanity-plugin-leaflet-input
 ```
 
-**Note**: If you have another geopoint input installed (such as `@sanity/google-maps-input`), you'll either need to move this plugin below it in your studios `sanity.json` `plugins` array (easiest), or explicitly [importing the input component](#importing-the-component) where you want to use it.
+Import the `leafletInput` plugin and add it to your Studio configuration:
 
-## Configuring
+```ts
+// sanity.config.ts
+import {defineConfig} from 'sanity'
+import {leafletInput} from 'sanity-plugin-leaflet-input'
 
-The plugin can be configured both "globally" and "locally".
-
-The global options can be defined in `<your-studio-folder>/config/leaflet-input.json`:
-
-```json
-{
-  "tileLayer": {
-    "attribution": "&copy; <a href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors",
-    "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-  },
-  "defaultLocation": {
-    "lat": 37.779048,
-    "lng": -122.415214
-  },
-  "defaultZoom": 13
-}
+export default defineConfig({
+  // projectId, dataset, schema, and other Studio options
+  plugins: [
+    leafletInput({
+      defaultLocation: {lat: 37.779048, lng: -122.415214},
+      defaultZoom: 13,
+    }),
+  ],
+})
 ```
 
-The same options can be defined on a field level ("local"):
+The plugin replaces the default input for every `geopoint` field. No field-level component configuration is needed:
 
-```js
-// some-schema-type.js
-export default {
-  name: 'restaurant',
+```ts
+import {defineField, defineType} from 'sanity'
+
+export const place = defineType({
+  name: 'place',
+  title: 'Place',
   type: 'document',
   fields: [
-    {
+    defineField({
+      name: 'title',
+      type: 'string',
+    }),
+    defineField({
       name: 'location',
       type: 'geopoint',
-      options: {
-        leaflet: {
-          defaultLocation: {
-            lat: 59.924095,
-            lng: 10.758458,
-          },
+    }),
+  ],
+})
+```
+
+## Configuration
+
+Calling `leafletInput()` without options uses OpenStreetMap tiles, centers the map on San Francisco, starts at zoom level 13, and searches with Photon.
+
+The plugin accepts these options:
+
+- `defaultLocation`: The `{lat, lng}` used when the field has no value.
+- `defaultZoom`: The initial Leaflet zoom level.
+- `search`: Set to `false` to hide search, or pass `{accessToken?, locationBiasScale?, maxResults?, placeholder?, url?}`. Providing `accessToken` selects Mapbox Geocoding. Search is always hidden for read-only fields.
+- `tileLayer.url`: A Leaflet tile URL template.
+- `tileLayer.options`: [Leaflet tile layer options](https://leafletjs.com/reference.html#tilelayer-option), including attribution, tile size, and zoom limits.
+- `tileLayer.templateValues`: Values for provider-specific placeholders in the tile URL.
+
+Tile requests default to `referrerPolicy: 'strict-origin-when-cross-origin'`. Leaflet applies this policy only to tile images, so OpenStreetMap receives the Studio origin without changing the policy for the rest of the Studio. Override `tileLayer.options.referrerPolicy` when another tile provider has different requirements.
+
+### Field-level options
+
+Add `options.leaflet` to a `geopoint` field to override the Studio-wide plugin configuration. The field values take precedence. Omitted values, including nested tile options and template values, inherit from `leafletInput(...)`.
+
+This field uses Mapbox while other `geopoint` fields continue to use the configured default tile layer:
+
+```ts
+import {defineField} from 'sanity'
+
+const mapboxAccessToken = process.env.SANITY_STUDIO_MAPBOX_ACCESS_TOKEN
+
+if (!mapboxAccessToken) {
+  throw new Error('Set SANITY_STUDIO_MAPBOX_ACCESS_TOKEN in .env')
+}
+
+export const mapboxLocation = defineField({
+  name: 'mapboxLocation',
+  title: 'Location (Mapbox)',
+  type: 'geopoint',
+  options: {
+    leaflet: {
+      search: {accessToken: mapboxAccessToken},
+      tileLayer: {
+        url: 'https://api.mapbox.com/styles/v1/{id}/tiles/512/{z}/{x}/{y}?access_token={accessToken}',
+        options: {
+          attribution:
+            '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 18,
+          tileSize: 512,
+          zoomOffset: -1,
+        },
+        templateValues: {
+          accessToken: mapboxAccessToken,
+          id: 'mapbox/streets-v12',
         },
       },
     },
-  ],
-}
+  },
+})
 ```
 
-## Using Mapbox
+Field-level options use the same `LeafletInputConfig` shape as `leafletInput(...)`. Set `search: false` on a field to disable search for that field.
 
-In your studios `config/leaflet-input.json` file (if it's missing, run `sanity start` to generate it):
+### Search
 
-```json
-{
-  "tileLayer": {
-    "accessToken": "SOME_ACCESS_TOKEN",
-    "id": "mapbox.streets",
-    "maxZoom": 18,
-    "url": "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
-    "attribution": "© <a href=\"https://www.mapbox.com/about/maps/\">Mapbox</a> © <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> <strong><a href=\"https://www.mapbox.com/map-feedback/\" target=\"_blank\">Improve this map</a></strong>"
-  }
-}
+[Photon](https://github.com/komoot/photon) provides keyless, search-as-you-type geocoding based on OpenStreetMap data. The plugin uses Photon’s public demo endpoint by default.
+
+The public endpoint permits reasonable project use, but it may throttle extensive traffic and does not guarantee availability, nor is the accuracy great. Disable search or point the plugin at a self-hosted Photon service when you need different operational guarantees:
+
+```ts
+leafletInput({
+  search: {
+    locationBiasScale: 0.1,
+    maxResults: 10,
+    placeholder: 'Find a location',
+    url: 'https://photon.example.com/api/',
+  },
+})
 ```
 
-Read more about access tokens [here](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/).
+The current map center and zoom bias search ranking without filtering out other locations. Exact matches in Photon’s house number, street, and name fields are ranked above matches that only occur in regional fields such as state or country. `locationBiasScale` accepts values from `0` to `1`; lower values favor nearby results more strongly.
 
-## Importing the component
+Provide a public Mapbox access token under `search.accessToken` to use the [Mapbox Geocoding API v6](https://docs.mapbox.com/api/search/geocoding/) instead of Photon:
 
-If you have multiple Geopoint inputs installed, you may need to import the leaflet plugin specifically in the cases where you want to use it:
+```ts
+leafletInput({
+  search: {
+    accessToken: process.env.SANITY_STUDIO_MAPBOX_ACCESS_TOKEN,
+    maxResults: 10,
+    placeholder: 'Find a location',
+  },
+})
+```
 
-```js
-// some-schema-type.js
-import LeafletGeopointInput from 'sanity-plugin-leaflet-input'
+Mapbox search uses the current map center as a proximity bias, not as a geographic filter. The plugin sends `permanent=true` because a selected result is stored in the Sanity document. Mapbox requires a billing-enabled account for permanent geocoding. Its autocomplete is also billed for each request, including each request sent while the user types. The search control waits for three characters and debounces requests by 250 milliseconds.
 
-export default {
-  name: 'restaurant',
-  type: 'document',
-  fields: [
-    {
-      name: 'location',
-      type: 'geopoint',
-      inputComponent: LeafletGeopointInput,
-    },
-  ],
+Mapbox requires results from its Geocoding API to be used with a Mapbox map. Configure Mapbox tiles alongside Mapbox search. The plugin does not infer a search token from `tileLayer.templateValues`; pass `search.accessToken` explicitly.
+
+### Studio-wide Mapbox configuration
+
+To use Mapbox for every `geopoint` field, pass the tile configuration to `leafletInput(...)`:
+
+```ts
+import {defineConfig} from 'sanity'
+import {leafletInput} from 'sanity-plugin-leaflet-input'
+
+const mapboxAccessToken = process.env.SANITY_STUDIO_MAPBOX_ACCESS_TOKEN
+
+if (!mapboxAccessToken) {
+  throw new Error('Set SANITY_STUDIO_MAPBOX_ACCESS_TOKEN in .env')
 }
+
+export default defineConfig({
+  // projectId, dataset, schema, and other Studio options
+  plugins: [
+    leafletInput({
+      search: {accessToken: mapboxAccessToken},
+      tileLayer: {
+        url: 'https://api.mapbox.com/styles/v1/{id}/tiles/512/{z}/{x}/{y}?access_token={accessToken}',
+        options: {
+          attribution:
+            '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> <a href="https://apps.mapbox.com/feedback/">Improve this map</a>',
+          maxZoom: 18,
+          tileSize: 512,
+          zoomOffset: -1,
+        },
+        templateValues: {
+          accessToken: mapboxAccessToken,
+          id: 'mapbox/streets-v12',
+        },
+      },
+    }),
+  ],
+})
+```
+
+Variables prefixed with `SANITY_STUDIO_` are included in the Studio bundle. Use a public Mapbox token here, not a secret token.
+
+## Local development
+
+The repository includes a minimal Studio with one fixed document at `leaflet-input-test`. Its schema has a title and a geopoint field, and its structure opens the document editor as the only pane.
+
+```sh
+cp .env.example .env
+npm install
+npm run dev
+```
+
+Set `SANITY_STUDIO_PROJECT_ID` and `SANITY_STUDIO_DATASET` in `.env` before starting the Studio. Set the optional `SANITY_STUDIO_MAPBOX_ACCESS_TOKEN` variable to use Mapbox tiles and geocoding for the field-level Mapbox example.
+
+Run all package checks with:
+
+```sh
+npm run check
 ```
 
 ## License

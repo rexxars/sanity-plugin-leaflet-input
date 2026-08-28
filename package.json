@@ -1,80 +1,76 @@
 {
   "name": "sanity-plugin-leaflet-input",
-  "version": "1.0.1",
-  "description": "Leaflet geopoint input component for Sanity.io",
-  "main": "lib/GeopointInput.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "sanipack build",
-    "prepublishOnly": "sanipack build && sanipack verify"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/rexxars/sanity-plugin-leaflet-input.git"
-  },
+  "version": "2.0.0",
+  "description": "Leaflet geopoint input for Sanity Studio",
   "keywords": [
-    "sanity-io",
+    "geopoint",
+    "leaflet",
+    "map",
     "sanity",
     "sanity-input-component",
-    "sanity-plugin",
-    "geopoint",
-    "map"
+    "sanity-plugin"
   ],
-  "author": "Espen Hovlandsdal",
   "license": "MIT",
+  "author": "Espen Hovlandsdal",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rexxars/sanity-plugin-leaflet-input.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build && npm run pack:check",
+    "dev": "sanity dev",
+    "format": "oxfmt",
+    "lint": "oxlint .",
+    "pack:check": "publint",
+    "prepublishOnly": "npm run check",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
-    "esri-leaflet-geocoder": "^2.3.4",
-    "leaflet": "^1.6.0",
-    "prop-types": "^15.0.0",
-    "react-leaflet": "^2.6.3"
+    "@sanity/ui": "^4.0.7",
+    "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^4.0.0",
+    "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.18.0",
-    "eslint-config-prettier": "^7.2.0",
-    "eslint-config-sanity": "^1.149.0",
-    "eslint-plugin-react": "^7.19.0",
-    "prettier": "^2.0.4",
-    "react": "^17.0.0",
-    "sanipack": "^1.0.1"
+    "@tsdown/css": "^0.22.14",
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "oxfmt": "^0.65.0",
+    "oxlint": "^1.80.0",
+    "publint": "^0.3.15",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sanity": "^6.11.0",
+    "styled-components": "^6.5.3",
+    "tsdown": "^0.22.14",
+    "typescript": "^5.9.2",
+    "vitest": "^4.1.0"
   },
   "peerDependencies": {
-    "react": ">=16.2",
-    "react-dom": ">=16.2"
+    "react": "^19.2",
+    "react-dom": "^19.2",
+    "sanity": "^5 || ^6.0.0-0"
   },
-  "bugs": {
-    "url": "https://github.com/rexxars/sanity-plugin-leaflet-input/issues"
-  },
-  "homepage": "https://github.com/rexxars/sanity-plugin-leaflet-input#readme",
-  "prettier": {
-    "semi": false,
-    "printWidth": 100,
-    "bracketSpacing": false,
-    "singleQuote": true
-  },
-  "eslintConfig": {
-    "extends": [
-      "sanity",
-      "sanity/react",
-      "prettier",
-      "prettier/react"
-    ],
-    "env": {
-      "node": true,
-      "browser": true
-    },
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "ecmaFeatures": {
-        "jsx": true
-      }
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
-      }
-    },
-    "rules": {
-      "complexity": "off"
-    }
+  "engines": {
+    "node": ">=20.19 <22 || >=22.12"
   }
 }

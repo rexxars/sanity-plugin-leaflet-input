@@ -1,0 +1,7 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [],
+  "bracketSpacing": false,
+  "singleQuote": true,
+  "semi": false
+}

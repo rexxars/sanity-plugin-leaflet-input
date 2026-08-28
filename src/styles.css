@@ -1,0 +1,19 @@
+.sanity-leaflet-input {
+  width: 100%;
+}
+
+.sanity-leaflet-input__map {
+  height: 400px;
+  width: 100%;
+}
+
+.sanity-leaflet-input .leaflet-control-geocoder-form input,
+.sanity-leaflet-input .leaflet-control-geocoder-alternatives,
+.sanity-leaflet-input .leaflet-control-geocoder-alternatives a {
+  color: #111;
+}
+
+.sanity-leaflet-input .leaflet-control-geocoder-form input::placeholder {
+  color: #666;
+  opacity: 1;
+}
